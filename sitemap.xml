@@ -23,6 +23,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/verify-runtime-dependencies.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/async-loading-crash.html</loc>
     <lastmod>2026-07-31</lastmod>
     <priority>0.7</priority>
