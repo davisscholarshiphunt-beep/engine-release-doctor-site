@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unreal Windows Signing Preflight | Engine Release Doctor</title>
+  <meta name="description" content="A practical preflight for Unreal Engine Windows packages that run correctly but fail SignTool, Authenticode, bootstrapper, or PE certificate-table checks.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a><nav aria-label="Primary navigation"><a href="../index.html#audit">The audit</a><a href="../index.html#process">Process</a><a href="index.html">Resources</a><a class="nav-cta" href="../index.html#apply">Apply</a></nav></div></header>
+
+  <main id="main">
+    <section class="article-hero">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Windows signing</p>
+        <p class="eyebrow">Pre-distribution artifact check</p>
+        <h1>Your Unreal Windows build runs—but can every EXE be signed?</h1>
+        <p class="hero-copy">A successful launch does not prove that every executable in the packaged artifact has a valid PE structure or can pass Authenticode signing and verification.</p>
+        <p class="article-meta">Published July 31, 2026 · Windows release signing preflight</p>
+      </div>
+    </section>
+
+    <div class="wrap article-layout">
+      <article class="article-body">
+        <p>An Unreal Windows package may contain more than one executable: a small root bootstrapper, the main Shipping executable under <code>Binaries/Win64</code>, crash reporters, installers, launchers, and plugin-provided helpers. A reported Unreal Engine 5.5 case showed a root bootstrapper that launched normally but could not be signed because its PE Certificate Table entry pointed beyond the end of the file. The main executable and bootstrapper were separate artifacts, so testing only one would not have caught the release blocker.</p>
+
+        <h2>1. Inventory every executable that will ship</h2>
+        <ul>
+          <li>Root bootstrapper executable</li>
+          <li>Main executable under <code>Binaries/Win64</code></li>
+          <li>Crash reporters and helper programs</li>
+          <li>Installers and launchers</li>
+          <li>Executables introduced by plugins or third-party tools</li>
+        </ul>
+        <p>Record each file's path, size, hash, role, and whether it is already signed. Do not assume two executables produced by the same package have the same binary structure or signing state.</p>
+
+        <h2>2. Separate four different checks</h2>
+        <ul>
+          <li>Does the executable launch?</li>
+          <li>Is its PE structure valid?</li>
+          <li>Can it be signed and timestamped?</li>
+          <li>Does signature verification succeed afterward?</li>
+        </ul>
+        <p>A file can pass the first check and fail the other three. Treat each result as separate evidence.</p>
+
+        <h2>3. Test copies of the exact final artifact</h2>
+        <p>Use copies of the files produced by the real release pipeline—not an editor executable, an earlier build, or a manually reconstructed folder. Preserve the complete SignTool output, including the executable path, Windows SDK version, digest algorithm, timestamp method, exit code, and full error text.</p>
+        <p><strong>Never include certificate passwords, private keys, hardware-token PINs, or signing-service credentials in a diagnostic bundle.</strong></p>
+
+        <h2>4. Inspect the bootstrapper separately</h2>
+        <p>When signing fails, compare the root bootstrapper and main Shipping executable independently:</p>
+        <ul>
+          <li>File size and hash</li>
+          <li>Existing signature state</li>
+          <li>SignTool sign result</li>
+          <li>SignTool verify result</li>
+          <li>Whether the failure follows only one file</li>
+        </ul>
+
+        <h2>5. Validate the PE Certificate Table</h2>
+        <p>Microsoft documents that the Certificate Table entry identifies the file offset and size of the attribute certificate table. For an unsigned executable, the entry should not falsely point to certificate data outside the file. If a PE inspection tool shows an address or size beyond the file boundary, preserve that finding as evidence of an artifact-structure problem rather than assuming the certificate itself is defective.</p>
+
+        <h2>6. Compare engine and pipeline conditions</h2>
+        <ul>
+          <li>Exact Unreal Engine version and patch</li>
+          <li>Launcher build or source-built engine</li>
+          <li>Packaging path and generated command</li>
+          <li>Whether a bootstrap executable was generated</li>
+          <li>Resource editing or other post-processing</li>
+          <li>Antivirus, synchronization, or file-locking interference</li>
+          <li>Last engine or artifact version that signed successfully</li>
+        </ul>
+        <p>Change one variable at a time and keep the original failing artifact so that a successful retest produces useful evidence.</p>
+
+        <h2>7. Do not make ad hoc binary editing the production fix</h2>
+        <p>Clearing or rewriting a malformed header may confirm the diagnosis, but an unreproducible manual patch can conceal the upstream defect, invalidate release records, or create compliance and maintenance risk. Prefer a corrected packaging path, verified engine fix, or reviewed reproducible post-processing step.</p>
+
+        <h2>8. Verify the complete signed release</h2>
+        <ul>
+          <li>Verify every executable that will be distributed.</li>
+          <li>Confirm the expected timestamp and digest algorithms.</li>
+          <li>Launch the signed package on a clean or representative machine.</li>
+          <li>Test the actual installer, launcher, depot, or store-delivered path.</li>
+          <li>Preserve file hashes, inventory, signing output, and verification output with the release record.</li>
+        </ul>
+
+        <h2>Evidence bundle</h2>
+        <ul>
+          <li>Engine version, target, and packaging method</li>
+          <li>Generated command and complete packaging log</li>
+          <li>Final output-file tree</li>
+          <li>Every distributed executable and its role</li>
+          <li>Complete SignTool sign and verify output</li>
+          <li>PE inspection findings</li>
+          <li>Last working artifact comparison</li>
+          <li>Relevant engine, pipeline, or post-processing changes</li>
+        </ul>
+
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://forums.unrealengine.com/t/invalid-certificate-table-in-packaged-windows-bootstrapper-prevents-code-signing/2675079">Epic Developer Community: Invalid Certificate Table in Packaged Windows Bootstrapper Prevents Code Signing</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format">Microsoft Learn: PE format and attribute certificate table</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool">Microsoft Learn: SignTool</a></li>
+        </ul>
+      </article>
+
+      <aside class="article-aside">
+        <h3>Runnable package still blocked by signing?</h3>
+        <p>Send sanitized artifact inventory, SignTool output, PE findings, packaging details, and the last working comparison for consideration in one of the first five qualified free manual Release Blocker Audits.</p>
+        <a class="button primary" href="../index.html#apply">Request an audit</a>
+        <p>The current service is a manually fulfilled written audit. Signing, repair, store acceptance, and automated remediation are not guaranteed.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div><div class="footer-links"><a href="index.html">Resources</a><a href="mailto:epiclukefish5@gmail.com">Contact</a><a href="https://github.com/davisscholarshiphunt-beep/engine-release-doctor-site">GitHub</a></div></div></footer>
+</body>
+</html>
