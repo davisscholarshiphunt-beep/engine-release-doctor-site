@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Engine Release Doctor | Unreal Release Blocker Audits</title>
+  <meta name="description" content="A structured manual Release Blocker Audit for Unreal Engine developers and small studios facing packaging, staged-build, runtime, store, signing, or deployment failures.">
+  <meta name="theme-color" content="#0a1020">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Engine Release Doctor home">
+        <span class="brand-mark">ERD</span>
+        <span>Engine Release Doctor</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#audit">The audit</a>
+        <a href="#process">Process</a>
+        <a href="resources/index.html">Resources</a>
+        <a class="nav-cta" href="#apply">Apply</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Limited free beta · first five qualified cases</p>
+          <h1>Your Unreal build succeeded. Your release still failed.</h1>
+          <p class="hero-copy">Engine Release Doctor helps solo developers and small studios determine whether a release blocker lives in the project, packaging pipeline, staged artifact, target machine, plugin stack, signing process, or store workflow.</p>
+          <div class="button-row">
+            <a class="button primary" href="#apply">Request a free audit</a>
+            <a class="button secondary" href="#evidence">See what to send</a>
+          </div>
+          <p class="fine-print">Current service: manually fulfilled diagnostic audit. No automated repair claim, store-approval guarantee, or guaranteed resolution.</p>
+        </div>
+
+        <aside class="diagnostic-card" aria-label="Audit summary">
+          <div class="status-line"><span class="status-dot"></span> Free beta accepting qualified cases</div>
+          <h2>Release Blocker Audit</h2>
+          <ul class="check-list">
+            <li>Failure-domain classification</li>
+            <li>Likely-cause ranking</li>
+            <li>Exact isolation steps</li>
+            <li>Controlled retest plan</li>
+            <li>Rollback and escalation boundaries</li>
+          </ul>
+          <div class="card-note">Asynchronous evidence review followed by a structured written report.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="signal-strip" aria-label="Common release blockers">
+      <div class="wrap signal-grid">
+        <span>Packaging failures</span>
+        <span>Shipping-only failures</span>
+        <span>Packaged-runtime crashes</span>
+        <span>Steam and EGS blockers</span>
+        <span>Staging and dependency errors</span>
+        <span>Signing and deployment issues</span>
+      </div>
+    </section>
+
+    <section id="audit" class="section">
+      <div class="wrap">
+        <div class="section-heading">
+          <p class="eyebrow">What the audit delivers</p>
+          <h2>A narrower problem, an evidence-backed next test</h2>
+          <p>The goal is not to guess at settings until something changes. The goal is to locate the failing stage, rank plausible causes, and define a controlled test that can confirm or eliminate each one.</p>
+        </div>
+
+        <div class="card-grid three">
+          <article class="feature-card">
+            <span class="step-number">01</span>
+            <h3>Classify the failure</h3>
+            <p>Separate project-content problems from toolchain, packaging, staging, artifact, machine, distribution, signing, and store-workflow failures.</p>
+          </article>
+          <article class="feature-card">
+            <span class="step-number">02</span>
+            <h3>Rank likely causes</h3>
+            <p>Review logs, generated commands, engine version, plugins, configuration, artifact contents, and last-known-working conditions.</p>
+          </article>
+          <article class="feature-card">
+            <span class="step-number">03</span>
+            <h3>Plan the retest</h3>
+            <p>Receive exact isolation steps, expected observations, rollback instructions, and a clear boundary for uncertainty or escalation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="process">
+      <div class="wrap two-column">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>Built for blocked releases, not vague optimization</h2>
+          <p class="lead">A good case has a concrete failure, a reproducible or observable release path, and enough evidence to distinguish competing explanations.</p>
+        </div>
+        <ol class="process-list">
+          <li>
+            <strong>Submit the case.</strong>
+            <span>Describe the exact blocker and provide the evidence checklist below.</span>
+          </li>
+          <li>
+            <strong>Qualification review.</strong>
+            <span>The case is checked for fit, sufficient evidence, and whether a useful audit can be completed asynchronously.</span>
+          </li>
+          <li>
+            <strong>Diagnostic report.</strong>
+            <span>You receive a written classification, cause ranking, isolation sequence, and controlled retest plan.</span>
+          </li>
+          <li>
+            <strong>Outcome tracking.</strong>
+            <span>Results are recorded so future product rules are based on tested evidence rather than assumptions.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="evidence" class="section">
+      <div class="wrap evidence-grid">
+        <div>
+          <p class="eyebrow">Evidence checklist</p>
+          <h2>Send enough context to avoid random troubleshooting</h2>
+          <p>Incomplete excerpts often hide the actual failure. Start with the full release path and preserve the exact environment in which the blocker appears.</p>
+          <div class="privacy-note">
+            <strong>Protect sensitive information.</strong> Remove passwords, API keys, signing secrets, private customer data, and any credentials before sending files. Logs may also contain local usernames and machine paths.
+          </div>
+        </div>
+        <div class="check-panel">
+          <ul class="evidence-list">
+            <li>Unreal Engine version and patch</li>
+            <li>Launcher or source-built engine</li>
+            <li>Target platform and build configuration</li>
+            <li>Complete logs, not only the final error line</li>
+            <li>Generated build or packaging command</li>
+            <li>Enabled plugin list and recent plugin changes</li>
+            <li>Relevant configuration changes</li>
+            <li>Artifact structure and missing/present files</li>
+            <li>Exact runtime or store behavior</li>
+            <li>Last known working version or setup</li>
+            <li>Steps already attempted and their results</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="wrap">
+        <div class="section-heading compact">
+          <p class="eyebrow">Good fit</p>
+          <h2>Cases this beta is designed to examine</h2>
+        </div>
+        <div class="fit-grid">
+          <div class="fit-card yes">
+            <h3>Strong fit</h3>
+            <ul>
+              <li>Packaging reports success but the artifact fails</li>
+              <li>Development works while Shipping fails</li>
+              <li>A packaged build crashes on startup or another machine</li>
+              <li>Steam or Epic submission behavior differs from local testing</li>
+              <li>Engine or plugin upgrades broke a previously working path</li>
+              <li>Staged files, chunks, prerequisites, or dependencies appear wrong</li>
+            </ul>
+          </div>
+          <div class="fit-card no">
+            <h3>Not currently promised</h3>
+            <ul>
+              <li>Guaranteed repair or store approval</li>
+              <li>Emergency live-call support</li>
+              <li>Access to private accounts or credentials</li>
+              <li>Automatic remediation or one-click fixes</li>
+              <li>General game optimization without a release blocker</li>
+              <li>Legal, certification, or platform-policy guarantees</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section resources-preview">
+      <div class="wrap">
+        <div class="section-heading row-heading">
+          <div>
+            <p class="eyebrow">Practical release guidance</p>
+            <h2>Free troubleshooting resources</h2>
+          </div>
+          <a class="text-link" href="resources/index.html">View all resources →</a>
+        </div>
+        <div class="card-grid three">
+          <article class="resource-card">
+            <p class="tag">Crash evidence</p>
+            <h3><a href="resources/unreal-crash-log-evidence.html">Your Unreal crash may not be in the saved log</a></h3>
+            <p>How to preserve live-console, crash-report, and packaged-runtime evidence before the most useful message disappears.</p>
+          </article>
+          <article class="resource-card">
+            <p class="tag">Build verification</p>
+            <h3><a href="resources/verify-shipping-build.html">Verify your Shipping build is actually Shipping</a></h3>
+            <p>A release-readiness check for configuration drift, debug behavior, staged binaries, and the exact distributed artifact.</p>
+          </article>
+          <article class="resource-card">
+            <p class="tag">Runtime failure</p>
+            <h3><a href="resources/async-loading-crash.html">When a successful package crashes in AsyncLoading2</a></h3>
+            <p>A disciplined evidence path for startup crashes that appear only after packaging.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="apply" class="section apply-section">
+      <div class="wrap apply-card">
+        <div>
+          <p class="eyebrow">First five qualified audits are free</p>
+          <h2>Send the blocker. Preserve the evidence.</h2>
+          <p>Include your engine version, complete logs, generated command, plugin list, artifact details, exact error or observed behavior, and the last setup that worked.</p>
+        </div>
+        <div class="apply-actions">
+          <a class="button primary large" href="mailto:davisscholarshiphunt@gmail.com?subject=Engine%20Release%20Doctor%20%E2%80%94%20Free%20Beta%20Audit%20Request&body=Project%20or%20studio%20name%3A%0A%0AUnreal%20Engine%20version%20and%20patch%3A%0A%0ATarget%20platform%20and%20configuration%3A%0A%0AExact%20release%20blocker%3A%0A%0AWhat%20works%20and%20what%20fails%3A%0A%0ALast%20known%20working%20setup%3A%0A%0ALinks%20to%20sanitized%20logs%20or%20artifact%20details%3A%0A%0ASteps%20already%20attempted%3A%0A%0APlease%20do%20not%20include%20passwords%2C%20API%20keys%2C%20signing%20secrets%2C%20or%20other%20credentials.">Request a free audit by email</a>
+          <p class="contact-line">Contact: <a href="mailto:davisscholarshiphunt@gmail.com">davisscholarshiphunt@gmail.com</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq-section">
+      <div class="wrap narrow">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you apply</h2>
+        <details>
+          <summary>Is this an automated diagnostic product?</summary>
+          <p>No. The current beta is a manually fulfilled written audit. Product rules may be developed from tested case evidence, but automated capabilities are not being promised here.</p>
+        </details>
+        <details>
+          <summary>Is the audit guaranteed to fix the release?</summary>
+          <p>No. The deliverable is a structured diagnostic analysis and retest plan. Some failures depend on third-party platforms, unavailable source code, unsupported plugins, missing evidence, or issues outside the audit’s control.</p>
+        </details>
+        <details>
+          <summary>Why are the first audits free?</summary>
+          <p>The beta is being used to establish proof, measure fulfillment time, validate the scope, and convert repeated findings into tested reusable rules before any paid offer is finalized.</p>
+        </details>
+        <details>
+          <summary>Can I send a private repository or credentials?</summary>
+          <p>Do not send credentials. Begin with sanitized logs, commands, configuration details, artifact information, and reproducible observations. Any deeper access would require a separate, explicit agreement.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div>
+        <strong>Engine Release Doctor</strong>
+        <p>Evidence-backed release troubleshooting for Unreal Engine developers.</p>
+      </div>
+      <div class="footer-links">
+        <a href="resources/index.html">Resources</a>
+        <a href="mailto:davisscholarshiphunt@gmail.com">Contact</a>
+        <a href="https://github.com/davisscholarshiphunt-beep/engine-release-doctor-site">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
