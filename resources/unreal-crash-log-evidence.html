@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Unreal Crash May Not Be in the Saved Log | Engine Release Doctor</title>
+  <meta name="description" content="An evidence checklist for Unreal Engine packaged Windows builds that crash without preserving the decisive error in the ordinary saved log.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a>
+      <nav aria-label="Primary navigation"><a href="../index.html#audit">The audit</a><a href="../index.html#process">Process</a><a href="index.html">Resources</a><a class="nav-cta" href="../index.html#apply">Apply</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="article-hero">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Crash evidence</p>
+        <p class="eyebrow">Packaged Windows builds</p>
+        <h1>Your Unreal crash may not be in the saved log</h1>
+        <p class="hero-copy">A packaged build can fail without preserving the decisive message in its ordinary <code>Saved/Logs</code> output. Before changing project settings at random, build a fuller evidence record.</p>
+        <p class="article-meta">Published July 31, 2026 · Practical diagnostic checklist</p>
+      </div>
+    </section>
+
+    <div class="wrap article-layout">
+      <article class="article-body">
+        <p>The saved Unreal log is important, but it is not the only evidence source. A process may terminate before buffered output is written, a system-level fault may occur outside the engine’s normal reporting path, or the useful message may appear only in live console output. Treat a silent or abruptly ending log as a reason to widen the evidence collection—not as proof of any one root cause.</p>
+
+        <h2>1. Run the packaged executable with live output</h2>
+        <p>Launch the actual packaged executable with:</p>
+        <pre><code>YourGame.exe -log</code></pre>
+        <p>Keep the console visible and capture the final messages before the process exits. Copied text is preferable, but a screenshot is better than losing transient output entirely.</p>
+
+        <h2>2. Preserve the ordinary Unreal log</h2>
+        <p>Collect the newest log from the packaged build’s <code>Saved/Logs</code> directory. Record whether it:</p>
+        <ul>
+          <li>ends normally,</li>
+          <li>stops abruptly,</li>
+          <li>contains a fatal error or assertion, or</li>
+          <li>omits a message that appeared in the live console.</li>
+        </ul>
+
+        <h2>3. Record the exact build identity</h2>
+        <ul>
+          <li>Unreal Engine version and patch</li>
+          <li>Launcher or source-built engine</li>
+          <li>Development, Test, or Shipping configuration</li>
+          <li>Target platform and executable name</li>
+          <li>Packaging method used</li>
+          <li>Whether an earlier engine or project revision worked</li>
+        </ul>
+        <p>Build identity matters because Development, Test, and Shipping configurations expose different debugging behavior and optimization choices.</p>
+
+        <h2>4. Capture Windows-level crash evidence</h2>
+        <p>Open Windows Event Viewer and inspect <strong>Windows Logs → Application</strong>. Preserve the event matching the failure time, including the faulting application, faulting module, exception code, and timestamp. Retain any Windows Error Reporting entry or crash dump that corresponds to the same process.</p>
+
+        <h2>5. Record the target machine</h2>
+        <ul>
+          <li>CPU and GPU</li>
+          <li>Installed RAM</li>
+          <li>Windows build</li>
+          <li>Graphics-driver version</li>
+          <li>Whether the crash occurs on every tested system or only certain machines</li>
+        </ul>
+        <p>A package that fails on one device but not another requires a different investigation than a universally broken artifact.</p>
+
+        <h2>6. Test one controlled change at a time</h2>
+        <p>Changing ten settings at once can produce a temporary workaround while destroying the evidence needed to understand the failure. Change one suspected variable, rebuild, and record the result.</p>
+        <p>Useful comparisons include:</p>
+        <ul>
+          <li>current engine patch versus the last working patch,</li>
+          <li>Development versus Shipping,</li>
+          <li>a clean template versus the real project,</li>
+          <li>a suspected feature enabled versus disabled, and</li>
+          <li>an affected machine versus an unaffected machine.</li>
+        </ul>
+
+        <h2>7. Build a compact evidence bundle</h2>
+        <ul>
+          <li>Saved Unreal log</li>
+          <li>Captured <code>-log</code> console output</li>
+          <li>Windows crash event or dump</li>
+          <li>Engine and build details</li>
+          <li>Machine specifications</li>
+          <li>Plugin list</li>
+          <li>Last known working setup</li>
+          <li>Exact reproduction steps</li>
+          <li>Results of controlled comparison tests</li>
+        </ul>
+
+        <blockquote><p>The objective is not merely to collect more files. It is to determine where the failure occurs: before Unreal logging begins, during startup, during asset loading, inside a configuration-specific feature, or outside Unreal entirely.</p></blockquote>
+
+        <h2>Official references</h2>
+        <ul>
+          <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project">Epic Games: Packaging Unreal Engine Projects</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/unreal-engine/build-configurations-reference-for-unreal-engine">Epic Games: Build Configurations Reference</a></li>
+        </ul>
+      </article>
+
+      <aside class="article-aside">
+        <h3>Release still blocked?</h3>
+        <p>The first five qualified manual Release Blocker Audits are free during the beta.</p>
+        <a class="button primary" href="../index.html#apply">Request an audit</a>
+        <p><strong>Do not send credentials.</strong> Sanitize passwords, API keys, signing secrets, customer data, usernames, and sensitive local paths.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div><div class="footer-links"><a href="index.html">Resources</a><a href="mailto:davisscholarshiphunt@gmail.com">Contact</a></div></div></footer>
+</body>
+</html>
