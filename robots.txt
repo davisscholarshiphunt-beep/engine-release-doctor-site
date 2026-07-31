@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/sitemap.xml
