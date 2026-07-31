@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Unreal Release Troubleshooting Resources | Engine Release Doctor</title>
-  <meta name="description" content="Practical evidence checklists for Unreal Engine packaging, Shipping-build, staged-artifact, dependency, signing, and packaged-runtime failures.">
+  <meta name="description" content="Practical evidence checklists for Unreal Engine packaging, Shipping-build, staged-artifact, dependency, signing, source-build performance, and packaged-runtime failures.">
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
         <p class="breadcrumb"><a href="../index.html">Home</a> / Resources</p>
         <p class="eyebrow">Release evidence library</p>
         <h1>Stop guessing. Preserve the evidence.</h1>
-        <p class="hero-copy">Practical checklists for Unreal Engine developers facing packaging success followed by a broken artifact, Shipping-only behavior, startup crashes, missing dependencies, signing failures, or distribution problems.</p>
+        <p class="hero-copy">Practical checklists for Unreal Engine developers facing packaging success followed by a broken artifact, Shipping-only behavior, startup crashes, missing dependencies, signing failures, source-build delays, or distribution problems.</p>
       </div>
     </section>
 
@@ -57,6 +57,11 @@
           <p class="tag">Runtime failure</p>
           <h3><a href="async-loading-crash.html">When a successful package crashes in AsyncLoading2</a></h3>
           <p>Preserve the assertion, trace shared asset references, inspect Blueprint ancestry, and compare against the last working build.</p>
+        </article>
+        <article class="resource-card">
+          <p class="tag">Source-build performance</p>
+          <h3><a href="source-build-packaging-slow.html">Why does your source-built Unreal Engine take hours to package?</a></h3>
+          <p>Compare Launcher and source environments, count repeated compile actions, verify Installed Build provenance, and preserve controlled timing evidence.</p>
         </article>
       </div>
     </section>
