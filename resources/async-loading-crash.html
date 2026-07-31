@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When a Successful Unreal Package Crashes in AsyncLoading2 | Engine Release Doctor</title>
+  <meta name="description" content="A disciplined evidence path for Unreal Engine packaged builds that succeed, then crash during AsyncLoading2 startup or cooked asset loading.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a><nav aria-label="Primary navigation"><a href="../index.html#audit">The audit</a><a href="../index.html#process">Process</a><a href="index.html">Resources</a><a class="nav-cta" href="../index.html#apply">Apply</a></nav></div></header>
+
+  <main id="main">
+    <section class="article-hero">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Runtime failure</p>
+        <p class="eyebrow">Cooked asset startup failures</p>
+        <h1>Your package succeeded—now it crashes in AsyncLoading2</h1>
+        <p class="hero-copy">A successful package is not the same thing as a valid startup path. When a cooked build fails while creating or resolving exports, preserve the loading evidence before repeating broad cache deletions.</p>
+        <p class="article-meta">Published July 31, 2026 · Packaged-runtime investigation</p>
+      </div>
+    </section>
+
+    <div class="wrap article-layout">
+      <article class="article-body">
+        <p>AsyncLoading2 assertions and startup crashes can point toward an invalid cooked object relationship, class or Blueprint ancestry problem, renamed dependency, redirect, or reference chain. The final asset named in a log is not automatically the cause; it may simply be the point where a shared dependency becomes visible.</p>
+
+        <h2>1. Preserve the exact assertion and call stack</h2>
+        <p>Record the full assertion, function names, engine version, executable identity, build configuration, and complete startup log. Do not reduce the report to “the packaged build crashes.” The exact failing operation is what makes the case testable.</p>
+
+        <h2>2. Record the final assets mentioned before failure</h2>
+        <p>List the meshes, Blueprints, data assets, classes, and packages appearing near the end of the log. Mark which assets repeatedly appear across failing runs. Avoid deleting or renaming them until the reference evidence is preserved.</p>
+
+        <h2>3. Look for a shared reference chain</h2>
+        <p>Use Unreal’s Reference Viewer and dependency tools to determine whether the affected assets share:</p>
+        <ul>
+          <li>a Blueprint owner or component,</li>
+          <li>a Data Asset or Data Table,</li>
+          <li>a common parent class,</li>
+          <li>a GameInstance, GameMode, subsystem, or startup manager,</li>
+          <li>a moved, renamed, or deleted dependency,</li>
+          <li>a stale redirector, or</li>
+          <li>an invalid default object or template relationship.</li>
+        </ul>
+        <p>Epic’s Reference Viewer shows both assets that reference a selected asset and assets the selection depends on. Multiple selected assets can also reveal references they have in common.</p>
+
+        <h2>4. Inspect Blueprint and class ancestry</h2>
+        <p>Review recent changes to Blueprint parents, native base classes, class redirects, default subobjects, component templates, and startup classes. A relationship that appears repairable in the editor may still cook into an invalid export if serialized data or redirects no longer match the expected class.</p>
+
+        <h2>5. Review moved assets and redirectors</h2>
+        <p>Unreal leaves asset redirectors when assets are moved or renamed. Inspect redirectors associated with recent content changes and use the editor’s fix-up workflow deliberately. Do not assume every redirector is the cause, but do record whether the failure began after a rename, move, consolidation, plugin change, or class refactor.</p>
+
+        <h2>6. Debug the exact packaged executable</h2>
+        <p>When source and symbols are available, attach a debugger to the executable inside the packaged <code>Binaries/Win64</code> directory rather than only the root bootstrap executable. Keep symbols from the exact build and inspect the package, export, template object, and expected load class at the assertion.</p>
+        <p>Shipping builds can still produce symbols when built from Visual Studio or when debug files are included through Packaging settings; the configuration affects debugging behavior but does not make all post-build inspection impossible.</p>
+
+        <h2>7. Compare against the last working build</h2>
+        <p>Record controlled differences involving:</p>
+        <ul>
+          <li>asset renames or moves,</li>
+          <li>Blueprint reparenting,</li>
+          <li>native-class changes,</li>
+          <li>plugin updates,</li>
+          <li>engine upgrades,</li>
+          <li>redirect configuration,</li>
+          <li>startup classes, maps, and subsystems, and</li>
+          <li>cooked-content manifests.</li>
+        </ul>
+        <p>Retest one difference at a time so that a disappearing crash produces evidence rather than another mystery.</p>
+
+        <h2>8. Treat cache deletion as a test, not a diagnosis</h2>
+        <p>Clearing <code>Intermediate</code>, <code>Saved</code>, and Derived Data Cache can test for stale generated state. When it does not change the failure, stop repeating it. Move the investigation toward references, ancestry, redirects, serialized defaults, and debugger evidence.</p>
+
+        <h2>9. Build a compact diagnostic bundle</h2>
+        <ul>
+          <li>Engine version and patch</li>
+          <li>Development, Test, or Shipping configuration</li>
+          <li>Full startup log</li>
+          <li>Exact assertion and call stack</li>
+          <li>Final assets loaded before failure</li>
+          <li>Startup map, GameInstance, and GameMode</li>
+          <li>Recent asset or class changes</li>
+          <li>Reference Viewer findings</li>
+          <li>Redirector or core-redirect changes</li>
+          <li>Debugger findings, if available</li>
+          <li>Last known working build</li>
+        </ul>
+
+        <h2>Official references</h2>
+        <ul>
+          <li><a href="https://dev.epicgames.com/documentation/unreal-engine/reference-viewer-in-unreal-engine">Epic Games: Reference Viewer</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/unreal-engine/referencing-assets-in-unreal-engine">Epic Games: Referencing Assets</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/unreal-engine/asset-redirectors-in-unreal-engine">Epic Games: Asset Redirectors</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/core-redirects-in-unreal-engine">Epic Games: Core Redirects</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/build-configurations-reference-for-unreal-engine">Epic Games: Build Configurations Reference</a></li>
+        </ul>
+      </article>
+
+      <aside class="article-aside">
+        <h3>Need a structured next test?</h3>
+        <p>The current free beta reviews packaged-runtime evidence and returns a manual failure classification, likely-cause ranking, isolation sequence, and retest plan.</p>
+        <a class="button primary" href="../index.html#apply">Request an audit</a>
+        <p>No repair or outcome is guaranteed.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div><div class="footer-links"><a href="index.html">Resources</a><a href="mailto:davisscholarshiphunt@gmail.com">Contact</a></div></div></footer>
+</body>
+</html>
