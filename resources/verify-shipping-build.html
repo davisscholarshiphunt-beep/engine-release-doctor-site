@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify Your Unreal Shipping Build Is Actually Shipping | Engine Release Doctor</title>
+  <meta name="description" content="A pre-upload checklist for verifying Unreal Engine Shipping configuration, generated commands, staged files, dependencies, and clean-machine behavior.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a><nav aria-label="Primary navigation"><a href="../index.html#audit">The audit</a><a href="../index.html#process">Process</a><a href="index.html">Resources</a><a class="nav-cta" href="../index.html#apply">Apply</a></nav></div></header>
+
+  <main id="main">
+    <section class="article-hero">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Build verification</p>
+        <p class="eyebrow">Pre-upload release check</p>
+        <h1>Verify your Unreal Shipping build is actually Shipping</h1>
+        <p class="hero-copy">A green packaging result proves that the packaging operation completed. It does not, by itself, prove that the artifact matches the intended target, configuration, dependency set, or real distribution path.</p>
+        <p class="article-meta">Published July 31, 2026 · Windows, Steam, and dedicated-server readiness</p>
+      </div>
+    </section>
+
+    <div class="wrap article-layout">
+      <article class="article-body">
+        <p>Epic’s documentation distinguishes build, cook, stage, and package as separate operations. That distinction matters: the pipeline can complete while the final artifact still contains the wrong target, omits a required runtime file, or behaves differently outside the development machine.</p>
+
+        <h2>1. Confirm the generated build command</h2>
+        <p>Save the relevant AutomationTool or <code>BuildCookRun</code> command from the packaging output. Confirm that it names the intended:</p>
+        <ul>
+          <li>project and target,</li>
+          <li>platform,</li>
+          <li>client or server role, and</li>
+          <li>Development, Test, or Shipping configuration.</li>
+        </ul>
+        <p>Stop and inspect unexpected Development, DebugGame, Editor, Client, or Server targets before uploading.</p>
+
+        <h2>2. Test for configuration-specific behavior</h2>
+        <p>Epic describes Shipping as the distribution configuration that removes console commands, stats, and profiling tools that are not intended for end users. Launch the exact packaged executable and check for clues that conflict with the intended configuration:</p>
+        <ul>
+          <li>Can a console be opened when it should not be available?</li>
+          <li>Do debug messages, stats, or profiling tools remain accessible?</li>
+          <li>Does the executable, receipt, window title, or log identify another target?</li>
+          <li>Does the artifact include unexpected symbols or development-only files?</li>
+        </ul>
+        <p>One clue may not prove the configuration. Multiple conflicting clues justify pausing the release and tracing the pipeline.</p>
+
+        <h2>3. Inspect the staged artifact</h2>
+        <p>Compare the output against a known working release or an explicit expected manifest. Record:</p>
+        <ul>
+          <li>executable and DLL names,</li>
+          <li>plugin binaries,</li>
+          <li>Pak, Utoc, and Ucas files,</li>
+          <li>Steam runtime files,</li>
+          <li>dedicated-server dependencies,</li>
+          <li>prerequisite installers or app-local prerequisites,</li>
+          <li>configuration files, maps, and chunk layout.</li>
+        </ul>
+        <p>Packaging success does not guarantee that every file required by a target machine or storefront workflow is present.</p>
+
+        <h2>4. Test away from the development machine</h2>
+        <p>Run the artifact on a clean or representative target system when possible. Confirm that it does not silently rely on:</p>
+        <ul>
+          <li>redistributables already installed on the developer PC,</li>
+          <li>environment variables,</li>
+          <li>engine or plugin files outside the package,</li>
+          <li>local Steam files, or</li>
+          <li>uncopied configuration and content.</li>
+        </ul>
+
+        <h2>5. Test the exact release path</h2>
+        <p>Editor Play, Standalone, Development packages, local server sessions, and the final distributed Shipping artifact are different test paths. Validate the exact file set created by the method you intend to ship, including any store upload, depot, installer, launcher, or server-deployment step.</p>
+
+        <h2>6. Compare engine versions deliberately</h2>
+        <p>When the blocker begins after an engine upgrade, compare one controlled variable at a time:</p>
+        <ul>
+          <li>current engine patch versus the last working patch,</li>
+          <li>the same project and target,</li>
+          <li>a clean template using the same toolchain, and</li>
+          <li>file manifests from both outputs.</li>
+        </ul>
+        <p>This helps distinguish project drift from engine, plugin, toolchain, or staging regression.</p>
+
+        <h2>7. Preserve the release evidence</h2>
+        <ul>
+          <li>Engine version and patch</li>
+          <li>Launcher or source-built engine</li>
+          <li>Target and configuration</li>
+          <li>Packaging method and generated command</li>
+          <li>Complete packaging log</li>
+          <li>Output file tree or manifest</li>
+          <li>Plugin list</li>
+          <li>Last working artifact</li>
+          <li>Observed configuration-specific behavior</li>
+          <li>Target machine or server details</li>
+        </ul>
+
+        <blockquote><p>Do not upload merely because packaging completed. Upload after the exact artifact has been verified for the intended configuration, expected runtime files, clean-machine behavior, and real distribution path.</p></blockquote>
+
+        <h2>Official references</h2>
+        <ul>
+          <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project">Epic Games: Packaging Unreal Engine Projects</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/unreal-engine/build-configurations-reference-for-unreal-engine">Epic Games: Build Configurations Reference</a></li>
+          <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/sharing-and-releasing-projects-for-unreal-engine">Epic Games: Sharing and Releasing Projects</a></li>
+        </ul>
+      </article>
+
+      <aside class="article-aside">
+        <h3>Artifact looks wrong?</h3>
+        <p>Submit the generated command, complete log, plugin list, file tree, machine details, and last working artifact for a qualified free beta audit.</p>
+        <a class="button primary" href="../index.html#apply">Request an audit</a>
+        <p>No guaranteed repair, store approval, or automated remediation is promised.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div><div class="footer-links"><a href="index.html">Resources</a><a href="mailto:davisscholarshiphunt@gmail.com">Contact</a></div></div></footer>
+</body>
+</html>
