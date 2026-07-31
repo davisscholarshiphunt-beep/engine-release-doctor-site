@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unreal Release Troubleshooting Resources | Engine Release Doctor</title>
+  <meta name="description" content="Practical evidence checklists for Unreal Engine packaging, Shipping-build, staged-artifact, and packaged-runtime failures.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#audit">The audit</a>
+        <a href="../index.html#process">Process</a>
+        <a href="index.html">Resources</a>
+        <a class="nav-cta" href="../index.html#apply">Apply</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="resource-index-hero">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / Resources</p>
+        <p class="eyebrow">Release evidence library</p>
+        <h1>Stop guessing. Preserve the evidence.</h1>
+        <p class="hero-copy">Practical checklists for Unreal Engine developers facing packaging success followed by a broken artifact, Shipping-only behavior, startup crashes, missing dependencies, or distribution failures.</p>
+      </div>
+    </section>
+
+    <section class="resource-list">
+      <div class="wrap card-grid three">
+        <article class="resource-card">
+          <p class="tag">Crash evidence</p>
+          <h3><a href="unreal-crash-log-evidence.html">Your Unreal crash may not be in the saved log</a></h3>
+          <p>Capture live output, ordinary logs, Windows crash records, machine details, and controlled comparisons before transient evidence disappears.</p>
+        </article>
+        <article class="resource-card">
+          <p class="tag">Build verification</p>
+          <h3><a href="verify-shipping-build.html">Verify your Shipping build is actually Shipping</a></h3>
+          <p>Check the generated command, configuration-specific behavior, staged binaries, dependencies, and exact distributed artifact.</p>
+        </article>
+        <article class="resource-card">
+          <p class="tag">Runtime failure</p>
+          <h3><a href="async-loading-crash.html">When a successful package crashes in AsyncLoading2</a></h3>
+          <p>Preserve the assertion, trace shared asset references, inspect Blueprint ancestry, and compare against the last working build.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="wrap apply-card">
+        <div>
+          <p class="eyebrow">Free beta</p>
+          <h2>Still blocked after collecting the evidence?</h2>
+          <p>The first five qualified Engine Release Doctor Release Blocker Audits are free. The current service is a manual written audit, not finished automated software.</p>
+        </div>
+        <div class="apply-actions">
+          <a class="button primary large" href="../index.html#apply">Request an audit</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div>
+      <div class="footer-links"><a href="index.html">Resources</a><a href="mailto:davisscholarshiphunt@gmail.com">Contact</a><a href="https://github.com/davisscholarshiphunt-beep/engine-release-doctor-site">GitHub</a></div>
+    </div>
+  </footer>
+</body>
+</html>
