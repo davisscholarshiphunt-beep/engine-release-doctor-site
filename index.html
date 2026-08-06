@@ -104,7 +104,7 @@
         <ol class="process-list">
           <li>
             <strong>Submit the case.</strong>
-            <span>Describe the exact blocker and provide the evidence checklist below.</span>
+            <span>Describe the exact blocker and send a compact first-pass summary. After the case is checked for fit, you may receive one blocker-specific request for the smallest additional evidence needed.</span>
           </li>
           <li>
             <strong>Qualification review.</strong>
@@ -126,26 +126,23 @@
       <div class="wrap evidence-grid">
         <div>
           <p class="eyebrow">Evidence checklist</p>
-          <h2>Send enough context to avoid random troubleshooting</h2>
-          <p>Incomplete excerpts often hide the actual failure. Start with the full release path and preserve the exact environment in which the blocker appears.</p>
+          <h2>Start with the smallest useful evidence bundle</h2>
+          <p>You do not need to assemble a full project archive before qualification. Begin with the five items below. If the case fits, the reply will request only the one blocker-specific evidence set needed for the next diagnostic decision.</p>
           <div class="privacy-note">
             <strong>Protect sensitive information.</strong> Remove passwords, API keys, signing secrets, private customer data, and any credentials before sending files. Logs may also contain local usernames and machine paths.
           </div>
         </div>
         <div class="check-panel">
           <ul class="evidence-list">
-            <li>Unreal Engine version and patch</li>
-            <li>Launcher or source-built engine</li>
-            <li>Target platform and build configuration</li>
-            <li>Complete logs, not only the final error line</li>
-            <li>Generated build or packaging command</li>
-            <li>Enabled plugin list and recent plugin changes</li>
-            <li>Relevant configuration changes</li>
-            <li>Artifact structure and missing/present files</li>
-            <li>Exact runtime or store behavior</li>
-            <li>Last known working version or setup</li>
-            <li>Steps already attempted and their results</li>
+            <li><strong>Build identity:</strong> Unreal Engine version and patch, and launcher-installed or source-built engine</li>
+            <li><strong>Release target:</strong> platform, storefront or distribution path, Development or Shipping configuration, and client or server target</li>
+            <li><strong>Observable blocker:</strong> exact error, rejection, crash, or incorrect behavior, plus the stage where it occurs</li>
+            <li><strong>Smallest useful evidence:</strong> one complete relevant sanitized log or secure link, and the generated build or package command when available</li>
+            <li><strong>Comparison history:</strong> reproduction steps, last known working setup, recent engine, plugin, or project changes, and troubleshooting already attempted</li>
           </ul>
+          <div class="privacy-note">
+            <strong>Do not send a complete project or large build initially.</strong> Keep private repositories, credentials, access tokens, signing material, and unrelated proprietary source out of the first contact. Preserve filenames, relative paths, versions, commands, error codes, timestamps, and surrounding technical context.
+          </div>
         </div>
       </div>
     </section>
@@ -217,10 +214,10 @@
         <div>
           <p class="eyebrow">First five qualified audits are free</p>
           <h2>Send the blocker. Preserve the evidence.</h2>
-          <p>Include your engine version, complete logs, generated command, plugin list, artifact details, exact error or observed behavior, and the last setup that worked.</p>
+          <p>Start with the engine version, release target, exact blocker, one relevant sanitized log or secure link when available, and the last setup that worked. Do not send a full project or credentials. If the case fits, the reply will request one smaller blocker-specific evidence set.</p>
         </div>
         <div class="apply-actions">
-          <a class="button primary large" href="mailto:epiclukefish5@gmail.com?subject=Engine%20Release%20Doctor%20%E2%80%94%20Free%20Beta%20Audit%20Request&body=Project%20or%20studio%20name%3A%0A%0AUnreal%20Engine%20version%20and%20patch%3A%0A%0ATarget%20platform%20and%20configuration%3A%0A%0AExact%20release%20blocker%3A%0A%0AWhat%20works%20and%20what%20fails%3A%0A%0ALast%20known%20working%20setup%3A%0A%0ALinks%20to%20sanitized%20logs%20or%20artifact%20details%3A%0A%0ASteps%20already%20attempted%3A%0A%0APlease%20do%20not%20include%20passwords%2C%20API%20keys%2C%20signing%20secrets%2C%20or%20other%20credentials.">Request a free audit by email</a>
+          <a class="button primary large" href="mailto:epiclukefish5@gmail.com?subject=Engine%20Release%20Doctor%20%E2%80%94%20Free%20Beta%20Audit%20Request&body=Project%20or%20studio%20name%3A%0A%0AUnreal%20Engine%20version%20and%20patch%3A%0A%0ARelease%20target%2C%20platform%2C%20store%2C%20and%20configuration%3A%0A%0AExact%20observable%20blocker%20and%20pipeline%20stage%3A%0A%0ALink%20to%20one%20relevant%20sanitized%20log%20or%20error%2C%20when%20available%3A%0A%0ALast%20known%20working%20setup%20and%20troubleshooting%20already%20attempted%3A%0A%0ASecrets%20and%20credentials%20removed%3A%20Yes%20%2F%20No%0A%0APlease%20do%20not%20attach%20a%20full%20project%20or%20large%20packaged%20build%20during%20first%20contact.">Request a free audit by email</a>
           <p class="contact-line">Contact: <a href="mailto:epiclukefish5@gmail.com">epiclukefish5@gmail.com</a></p>
         </div>
       </div>
