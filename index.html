@@ -1,11 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Engine Release Doctor | Unreal Release Blocker Audits</title>
-  <meta name="description" content="A structured manual Release Blocker Audit for Unreal Engine developers and small studios facing packaging, staged-build, runtime, store, signing, or deployment failures.">
+  <meta name="description" content="An operator-assisted Release Blocker Audit for Unreal Engine developers and small studios facing packaging, staged-build, runtime, store, signing, or deployment failures. We perform the audit; you provide sanitized evidence.">
   <meta name="theme-color" content="#0a1020">
+  <link rel="canonical" href="https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/">
+  <meta property="og:title" content="Engine Release Doctor | Unreal Release Blocker Audits">
+  <meta property="og:description" content="Blocked after packaging? Engine Release Doctor reviews the sanitized evidence and returns an evidence-backed diagnosis and controlled retest plan.">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Engine Release Doctor — Release Blocker Audit",
+      "serviceType": "Unreal Engine release blocker diagnostic audit",
+      "provider": {
+        "@type": "Organization",
+        "name": "Engine Release Doctor"
+      },
+      "url": "https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/",
+      "description": "An operator-assisted audit for evidence-backed Unreal Engine packaging, staged-artifact, runtime, signing, store, and deployment blockers.",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Unreal Engine developers and small studios"
+      }
+    }
+  </script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -37,7 +61,7 @@
             <a class="button primary" href="#apply">Request a free audit</a>
             <a class="button secondary" href="#evidence">See what to send</a>
           </div>
-          <p class="fine-print">Current service: manually fulfilled diagnostic audit. No automated repair claim, store-approval guarantee, or guaranteed resolution.</p>
+          <p class="fine-print"><strong>We perform the audit.</strong> You provide a compact sanitized evidence set; Engine Release Doctor handles the diagnostic review and written report. No customer code audit, automated repair claim, store-approval guarantee, or guaranteed resolution.</p>
         </div>
 
         <aside class="diagnostic-card" aria-label="Audit summary">
@@ -50,7 +74,7 @@
             <li>Controlled retest plan</li>
             <li>Rollback and escalation boundaries</li>
           </ul>
-          <div class="card-note">Asynchronous evidence review followed by a structured written report.</div>
+          <div class="card-note">Deterministic diagnostics plus AI-assisted operator review, followed by a structured written report.</div>
         </aside>
       </div>
     </section>
@@ -107,8 +131,8 @@
             <span>Describe the exact blocker and send a compact first-pass summary. After the case is checked for fit, you may receive one blocker-specific request for the smallest additional evidence needed.</span>
           </li>
           <li>
-            <strong>Qualification review.</strong>
-            <span>The case is checked for fit, sufficient evidence, and whether a useful audit can be completed asynchronously.</span>
+            <strong>We perform the audit.</strong>
+            <span>Engine Release Doctor checks the case for fit, reviews the supplied evidence, runs the relevant diagnostic rules, and separates observed facts from supported inferences and unknowns. You do not audit our code.</span>
           </li>
           <li>
             <strong>Diagnostic report.</strong>
@@ -214,10 +238,10 @@
         <div>
           <p class="eyebrow">First five qualified audits are free</p>
           <h2>Send the blocker. Preserve the evidence.</h2>
-          <p>Start with the engine version, release target, exact blocker, one relevant sanitized log or secure link when available, and the last setup that worked. Do not send a full project or credentials. If the case fits, the reply will request one smaller blocker-specific evidence set.</p>
+          <p>Start with the engine version, release target, exact blocker, one relevant sanitized log or secure link when available, and the last setup that worked. You do not need to inspect code or prepare an audit. Do not send a full project or credentials. If the case fits, the reply will request one smaller blocker-specific evidence set.</p>
         </div>
         <div class="apply-actions">
-          <a class="button primary large" href="mailto:epiclukefish5@gmail.com?subject=Engine%20Release%20Doctor%20%E2%80%94%20Free%20Beta%20Audit%20Request&body=Project%20or%20studio%20name%3A%0A%0AUnreal%20Engine%20version%20and%20patch%3A%0A%0ARelease%20target%2C%20platform%2C%20store%2C%20and%20configuration%3A%0A%0AExact%20observable%20blocker%20and%20pipeline%20stage%3A%0A%0ALink%20to%20one%20relevant%20sanitized%20log%20or%20error%2C%20when%20available%3A%0A%0ALast%20known%20working%20setup%20and%20troubleshooting%20already%20attempted%3A%0A%0ASecrets%20and%20credentials%20removed%3A%20Yes%20%2F%20No%0A%0APlease%20do%20not%20attach%20a%20full%20project%20or%20large%20packaged%20build%20during%20first%20contact.">Request a free audit by email</a>
+          <a class="button primary large" href="mailto:epiclukefish5@gmail.com?subject=Engine%20Release%20Doctor%20%E2%80%94%20Free%20Beta%20Audit%20Request&body=Project%20or%20studio%20name%3A%0A%0AUnreal%20Engine%20version%20and%20patch%3A%0A%0ARelease%20target%2C%20platform%2C%20store%2C%20and%20configuration%3A%0A%0AExact%20observable%20blocker%20and%20pipeline%20stage%3A%0A%0ALink%20to%20one%20relevant%20sanitized%20log%20or%20error%2C%20when%20available%3A%0A%0ALast%20known%20working%20setup%20and%20troubleshooting%20already%20attempted%3A%0A%0AHow%20did%20you%20hear%20about%20Engine%20Release%20Doctor%3A%0A%0ASecrets%20and%20credentials%20removed%3A%20Yes%20%2F%20No%0A%0APlease%20do%20not%20attach%20a%20full%20project%20or%20large%20packaged%20build%20during%20first%20contact.">Request a free audit by email</a>
           <p class="contact-line">Contact: <a href="mailto:epiclukefish5@gmail.com">epiclukefish5@gmail.com</a></p>
         </div>
       </div>
@@ -228,8 +252,12 @@
         <p class="eyebrow">Questions</p>
         <h2>Before you apply</h2>
         <details>
+          <summary>Do I have to audit the code or understand Engine Release Doctor?</summary>
+          <p>No. Engine Release Doctor performs the evidence review, diagnostic checks, operator assessment, report preparation, and retest interpretation. You provide sanitized facts and evidence from the release system you control, then run only the controlled project-side test named in the report.</p>
+        </details>
+        <details>
           <summary>Is this an automated diagnostic product?</summary>
-          <p>No. The current beta is a manually fulfilled written audit. Product rules may be developed from tested case evidence, but automated capabilities are not being promised here.</p>
+          <p>Not as unattended customer self-service. The current beta is an operator-assisted written audit combining deterministic diagnostic rules with AI-assisted operator review. Product rules may be developed from tested case evidence, but automatic repair and comprehensive self-service inspection are not promised.</p>
         </details>
         <details>
           <summary>Is the audit guaranteed to fix the release?</summary>
