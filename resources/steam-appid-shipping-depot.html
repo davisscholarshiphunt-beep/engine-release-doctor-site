@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remove steam_appid.txt Before Steam Depot Upload | Engine Release Doctor</title>
+  <meta name="description" content="A practical Steam release check for finding and removing development-only steam_appid.txt overrides from Unreal Shipping artifacts before depot upload.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#audit">The audit</a>
+        <a href="../index.html#process">Process</a>
+        <a href="index.html">Resources</a>
+        <a class="nav-cta" href="../index.html#apply">Apply</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="article-page">
+      <div class="wrap article-wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Steam App ID hygiene</p>
+        <p class="eyebrow">Steam release preflight</p>
+        <h1>Why <code>steam_appid.txt</code> should not be in your Shipping depot</h1>
+        <p class="article-lead">A Steam build can look healthy during direct executable testing while still carrying a development override that does not belong in the artifact you upload.</p>
+
+        <div class="article-callout">
+          <strong>Inspect the final depot source, not only the project directory.</strong>
+          <p>Find every exact <code>steam_appid.txt</code> basename, remove it from Shipping output, fix the step that staged it, rebuild cleanly, and test through the Steam client.</p>
+        </div>
+
+        <h2>What the file changes</h2>
+        <p><a href="https://partner.steamgames.com/doc/sdk/api">Valve's Steamworks API documentation</a> describes <code>steam_appid.txt</code> as a development aid for supplying an App ID when an application is launched directly. Steam normally provides the App ID when the application is launched through Steam. Valve's release guidance says the override should not ship with a build and should be removed before depot upload.</p>
+        <p>This creates two different test paths:</p>
+        <ul>
+          <li><strong>Direct local launch:</strong> a developer may deliberately use the file while testing outside Steam.</li>
+          <li><strong>Release-path launch:</strong> the uploaded or installed build should receive its App ID through the intended Steam client workflow.</li>
+        </ul>
+        <p>A successful direct launch does not prove that the depot is clean or that the release-path App ID and Steamworks initialization behave correctly.</p>
+
+        <h2>1. Search the complete Shipping artifact</h2>
+        <p>Search the staged output or exact depot source—not only the Unreal project, plugin directory, or primary executable folder. Check nested directories, copied client and server outputs, installer payloads, CI artifacts, and manually assembled upload folders.</p>
+        <p>Record the full relative path of every file whose exact basename is:</p>
+        <pre><code>steam_appid.txt</code></pre>
+        <p>Do not stop after the first match. Near matches are separate files and should not be classified as the override merely because their names look similar:</p>
+        <pre><code>steam_appid.txt.example
+steam_appid.txt.bak
+my_steam_appid.txt</code></pre>
+
+        <h2>2. Find the upstream copy step</h2>
+        <p>Deleting the visible file from a final folder is not a durable fix if an earlier step will restore it during the next build. Trace the match back to its source:</p>
+        <ul>
+          <li>project or plugin staging rules;</li>
+          <li>post-build and packaging scripts;</li>
+          <li>CI copy or artifact-assembly jobs;</li>
+          <li>stale staging directories; or</li>
+          <li>manual depot preparation.</li>
+        </ul>
+        <p>Remove the release-path copy step while preserving any deliberately separate local development setup.</p>
+
+        <h2>3. Rebuild from clean staging output</h2>
+        <ol>
+          <li>Remove every discovered copy from the staged release artifact and depot source.</li>
+          <li>Correct the rule, script, job, or manual process that introduced it.</li>
+          <li>Delete only the known stale staging output for this build.</li>
+          <li>Rebuild the Shipping target from a clean state.</li>
+          <li>Search the rebuilt artifact again before upload.</li>
+        </ol>
+        <p>The second search is the gate. It proves that the production path—not a one-time manual cleanup—stopped adding the file.</p>
+
+        <h2>4. Test the corrected release path</h2>
+        <p>Upload or install the corrected content through the intended Steam workflow, then launch it through the Steam client. Confirm that the intended App ID is supplied and, if the product uses Steamworks, separately verify that API initialization succeeds.</p>
+        <p>Overlay behavior can be a useful product-specific runtime test, but it is not a substitute for checking the App ID path and Steamworks initialization directly.</p>
+
+        <h2>5. Preserve a small evidence bundle</h2>
+        <ul>
+          <li>Unreal Engine version and patch;</li>
+          <li>target platform and Shipping configuration;</li>
+          <li>build or packaging command;</li>
+          <li>staged-file manifest or directory tree;</li>
+          <li>every discovered <code>steam_appid.txt</code> relative path;</li>
+          <li>the upstream process that copied it;</li>
+          <li>clean-rebuild and second-search results; and</li>
+          <li>Steam-client launch and API-initialization results, when applicable.</li>
+        </ul>
+        <p>This turns a one-off cleanup into a repeatable release check and makes a regression easier to localize.</p>
+
+        <h2>What Engine Release Doctor can check</h2>
+        <p>The current technical core includes an opt-in <code>store.steam</code> rule that checks Shipping-artifact evidence for the exact <code>steam_appid.txt</code> basename. It preserves matching paths, ignores near-match filenames and non-Shipping artifacts, and returns removal, clean-rebuild, depot, and Steam-client retest guidance.</p>
+        <p>The rule does not delete files, upload a depot, inspect every Unreal setting, or prove complete Steam readiness. The public beta remains a manually fulfilled written audit, not an automatic repair service or store-approval guarantee.</p>
+
+        <h2>Primary source</h2>
+        <p><a href="https://partner.steamgames.com/doc/sdk/api">Steamworks API Overview</a> — Valve's development, App ID, initialization, and depot-upload guidance.</p>
+
+        <div class="article-cta">
+          <p class="eyebrow">Limited free beta</p>
+          <h2>Does the Steam build still behave differently after depot cleanup?</h2>
+          <p>Preserve the smallest blocker-specific evidence bundle and request consideration for one of the first five qualified free manual Release Blocker Audits.</p>
+          <a class="button primary" href="../index.html#apply">Request a free audit</a>
+          <p class="fine-print">No repair, Steam approval, platform response, automated remediation, or turnaround time is guaranteed.</p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div>
+      <div class="footer-links"><a href="index.html">Resources</a><a href="../index.html#apply">Contact</a><a href="https://github.com/davisscholarshiphunt-beep/engine-release-doctor-site">GitHub</a></div>
+    </div>
+  </footer>
+</body>
+</html>
