@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Remove steam_appid.txt Before Steam Depot Upload | Engine Release Doctor</title>
+  <title>Remove steam_appid.txt Before Upload | Engine Release Doctor</title>
   <meta name="description" content="A practical Steam release check for finding and removing development-only steam_appid.txt overrides from Unreal Shipping artifacts before depot upload.">
   <link rel="stylesheet" href="../styles.css">
 </head>
@@ -92,7 +92,7 @@ my_steam_appid.txt</code></pre>
 
         <h2>What Engine Release Doctor can check</h2>
         <p>The current technical core includes an opt-in <code>store.steam</code> rule that checks Shipping-artifact evidence for the exact <code>steam_appid.txt</code> basename. It preserves matching paths, ignores near-match filenames and non-Shipping artifacts, and returns removal, clean-rebuild, depot, and Steam-client retest guidance.</p>
-        <p>The rule does not delete files, upload a depot, inspect every Unreal setting, or prove complete Steam readiness. The public beta remains a manually fulfilled written audit, not an automatic repair service or store-approval guarantee.</p>
+        <p>The rule does not delete files, upload a depot, inspect every Unreal setting, or prove complete Steam readiness. The public beta remains an operator-assisted written audit performed by Engine Release Doctor from sanitized evidence, not an automatic repair service or store-approval guarantee.</p>
 
         <h2>Primary source</h2>
         <p><a href="https://partner.steamgames.com/doc/sdk/api">Steamworks API Overview</a> — Valve's development, App ID, initialization, and depot-upload guidance.</p>
@@ -100,7 +100,7 @@ my_steam_appid.txt</code></pre>
         <div class="article-cta">
           <p class="eyebrow">Limited free beta</p>
           <h2>Does the Steam build still behave differently after depot cleanup?</h2>
-          <p>Preserve the smallest blocker-specific evidence bundle and request consideration for one of the first five qualified free manual Release Blocker Audits.</p>
+          <p>Preserve the smallest blocker-specific evidence bundle and request consideration for one of the first five qualified free operator-assisted Release Blocker Audits.</p>
           <a class="button primary" href="../index.html#apply">Request a free audit</a>
           <p class="fine-print">No repair, Steam approval, platform response, automated remediation, or turnaround time is guaranteed.</p>
         </div>
