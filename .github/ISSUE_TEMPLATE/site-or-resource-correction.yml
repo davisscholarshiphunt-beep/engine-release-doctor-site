@@ -1,0 +1,50 @@
+name: Website or resource correction
+description: Report a broken link, public-site defect, accessibility problem, or factual correction. Do not include private project evidence.
+title: "[Site] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only for the public website and educational resources.
+
+        **Do not include private logs, project files, credentials, signing material, customer data, repository access, or confidential release evidence.** Audit requests belong in the private intake linked from the issue chooser.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Public issue type
+      options:
+        - Broken link or missing page
+        - Factual or technical correction
+        - Accessibility or usability problem
+        - Display or layout problem
+        - Other public-site issue
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Affected public page
+      description: Paste the public page URL or name the repository file.
+      placeholder: https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/...
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What is wrong?
+      description: Describe the public-facing problem and the observable result. Include only information safe to publish.
+      placeholder: The link returns a 404, or the paragraph conflicts with the cited source because...
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction or source
+      description: Optional. Link a primary source or describe the smallest correction that would resolve the public issue.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I have not included private project evidence, credentials, signing material, customer data, or confidential logs.
+          required: true
