@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Windows Long Paths: Manifest, Policy, and Real Exposure | Engine Release Doctor</title>
+  <meta name="description" content="A practical Unreal release preflight for separating actual Windows path exposure from longPathAware manifest support and target-machine LongPathsEnabled policy.">
+  <link rel="canonical" href="https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/windows-long-path-release-risk.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Windows long paths need more than one checkbox">
+  <meta property="og:description" content="Check the real staged or installed path, executable manifest capability, and target-machine policy separately before relying on Windows long-path behavior.">
+  <meta property="og:url" content="https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/windows-long-path-release-risk.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Windows long paths need more than one checkbox">
+  <meta name="twitter:description" content="A controlled release preflight for path exposure, longPathAware capability, and target-machine policy.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">ERD</span><span>Engine Release Doctor</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#audit">The audit</a>
+        <a href="../index.html#process">Process</a>
+        <a href="index.html">Resources</a>
+        <a class="nav-cta" href="../index.html#apply">Apply</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="article-page">
+      <div class="wrap article-wrap">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Resources</a> / Windows long paths</p>
+        <p class="eyebrow">Windows release preflight</p>
+        <h1>Windows long paths need more than one checkbox</h1>
+        <p class="article-lead">A packaged build can contain a path that works on the development machine and still fail during extraction, installation, updating, or runtime access. The useful diagnosis separates three questions: is a real path exposed, is the executable long-path aware, and is the target machine configured for the same behavior?</p>
+
+        <div class="article-callout">
+          <strong>Start with the path that will actually exist.</strong>
+          <p>Do not warn merely because long paths are theoretically possible. Measure the staged path, model or observe the installed path, and preserve the exact original path before deciding whether manifest or machine capability matters.</p>
+        </div>
+
+        <h2>1. Measure concrete path exposure</h2>
+        <p>Microsoft defines the ordinary Win32 <code>MAX_PATH</code> limit as 260 characters. The total includes the drive or share prefix, directory components, filename, separators, and terminating null character. A harmless short staged path can become risky after an installer or launcher places it beneath a long customer-selected root.</p>
+        <p>Preserve these values separately:</p>
+        <ul>
+          <li>the original staged relative path;</li>
+          <li>any staged absolute path;</li>
+          <li>the intended or observed installation root;</li>
+          <li>the resulting installed absolute path; and</li>
+          <li>the character length of each relevant form.</li>
+        </ul>
+        <p>Do not silently combine malformed or relative installation-root evidence with a staged path. A modeled installed path is defensible only when the root is a valid absolute Windows drive or UNC path.</p>
+
+        <h2>2. Keep relative and absolute paths distinct</h2>
+        <p>Microsoft states that the extended-length prefix cannot be used with a relative path, so relative paths remain limited to <code>MAX_PATH</code>. That means a relative path that already reaches the ordinary limit is not rescued by enabling long paths on the machine.</p>
+        <p>Absolute paths are a different case. Windows can remove <code>MAX_PATH</code> restrictions from many common Win32 file and directory functions, but only when the application and environment meet the documented conditions. The distinction matters because the corrective action is different:</p>
+        <ul>
+          <li><strong>Overlong relative path:</strong> shorten the project, plugin, asset, staging, or filename hierarchy.</li>
+          <li><strong>Overlong absolute path:</strong> prefer shortening when environments are uncertain; rely on long-path support only after verifying the executable and each target machine.</li>
+        </ul>
+
+        <h2>3. Verify the executable manifest</h2>
+        <p>Microsoft requires an application to opt in by declaring <code>longPathAware</code> in its manifest. A machine policy alone does not make an arbitrary executable long-path aware.</p>
+        <p>Record the shipped executable you inspected and the explicit manifest state:</p>
+        <pre><code>&lt;ws2:longPathAware&gt;true&lt;/ws2:longPathAware&gt;</code></pre>
+        <p>Treat an absent, false, or unverified value as different evidence states. Do not convert uncertainty into an enabled capability.</p>
+
+        <h2>4. Verify the target-machine policy</h2>
+        <p>Microsoft also requires the <code>LongPathsEnabled</code> registry value to exist and be set to <code>1</code>. The setting can be managed by Group Policy or device-management policy. Microsoft notes that the value is cached per process and that a restart or reboot may be required for already running processes to recognize a change.</p>
+        <p>This is environment evidence, not an application guarantee. A developer machine, build agent, tester machine, customer PC, installer process, updater, extractor, antivirus component, and third-party dependency may not share the same policy or process state.</p>
+
+        <h2>5. Do not assume every tool follows the same path rules</h2>
+        <p>Microsoft documents that many, but not all, file I/O APIs support extended-length behavior. It also warns that the shell and filesystem can have different requirements. A path that one API can create may still be awkward or unusable in another tool.</p>
+        <p>For a release artifact, test the complete path through:</p>
+        <ul>
+          <li>archive extraction or installer staging;</li>
+          <li>installation to the intended root;</li>
+          <li>patching or updating;</li>
+          <li>launcher and executable startup;</li>
+          <li>runtime reads and writes by plugins and dependencies; and</li>
+          <li>uninstall or cleanup.</li>
+        </ul>
+
+        <h2>6. Run a controlled retest</h2>
+        <ol>
+          <li>Preserve the failing original path, full length, executable, manifest state, machine-policy state, and first observable failure.</li>
+          <li>Shorten only the project, staging, install-root, or filename component that produces the exposure.</li>
+          <li>Rebuild from clean staged output.</li>
+          <li>Install or extract the corrected artifact on a clean target machine and repeat the same operation.</li>
+          <li>If the short-path baseline passes and long-path behavior is still required, verify <code>longPathAware=true</code> and <code>LongPathsEnabled=1</code> explicitly, restart affected processes, then repeat the same test.</li>
+          <li>Stop and preserve evidence if another API, dependency, installer, updater, or shell operation still fails.</li>
+        </ol>
+        <p>This sequence changes one variable at a time. It distinguishes a path-length blocker from a coincidental failure that happens to occur inside a deep directory.</p>
+
+        <h2>Evidence bundle to preserve</h2>
+        <ul>
+          <li>Unreal Engine version and patch;</li>
+          <li>target platform and configuration;</li>
+          <li>build, staging, archive, installer, or deployment command;</li>
+          <li>original staged paths and their lengths;</li>
+          <li>validated intended or observed installation root;</li>
+          <li>resulting installed paths and lengths;</li>
+          <li>shipped executable and manifest evidence;</li>
+          <li>target-machine <code>LongPathsEnabled</code> evidence;</li>
+          <li>first failing process or API-visible operation; and</li>
+          <li>short-path and long-path controlled retest results.</li>
+        </ul>
+
+        <h2>What Engine Release Doctor can check</h2>
+        <p>The current <code>platform.windows</code> diagnostic checks concrete staged or modeled installed path exposure. It keeps relative, staged-absolute, and modeled-installed paths distinct; preserves original path evidence; validates installation-root input; and reports executable and target-machine capability states separately.</p>
+        <p>It does not warn on harmless short paths. It does not edit the registry, rewrite an executable manifest, shorten project paths, change an installer, or guarantee that every Windows API or dependency supports the resulting path.</p>
+
+        <h2>Primary sources</h2>
+        <ul>
+          <li><a href="https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation">Microsoft Learn: Maximum Path Length Limitation</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file">Microsoft Learn: Naming Files, Paths, and Namespaces</a></li>
+        </ul>
+
+        <div class="article-cta">
+          <p class="eyebrow">Limited free beta</p>
+          <h2>Does the release still fail after the short-path comparison?</h2>
+          <p>Preserve the smallest blocker-specific evidence bundle and request consideration for one of the first five qualified free operator-assisted Release Blocker Audits.</p>
+          <a class="button primary" href="../index.html#apply">Request a free audit</a>
+          <p class="fine-print">No repair, platform approval, automatic remediation, environment control, or turnaround time is guaranteed.</p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>Engine Release Doctor</strong><p>Evidence-backed release troubleshooting for Unreal Engine developers.</p></div>
+      <div class="footer-links"><a href="index.html">Resources</a><a href="../index.html#apply">Contact</a><a href="https://github.com/davisscholarshiphunt-beep/engine-release-doctor-site">GitHub</a></div>
+    </div>
+  </footer>
+</body>
+</html>
