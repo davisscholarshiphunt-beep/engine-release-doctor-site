@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Unreal Release Troubleshooting Resources | Engine Release Doctor</title>
-  <meta name="description" content="Practical evidence checklists for Unreal Engine packaging, Shipping-build, staged-artifact, dependency, signing, source-build performance, and packaged-runtime failures.">
+  <meta name="description" content="Practical evidence checklists for Unreal Engine packaging, Shipping builds, staged artifacts, Windows path exposure, dependencies, signing, source-build performance, and packaged-runtime failures.">
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
         <p class="breadcrumb"><a href="../index.html">Home</a> / Resources</p>
         <p class="eyebrow">Release evidence library</p>
         <h1>Stop guessing. Preserve the evidence.</h1>
-        <p class="hero-copy">Practical checklists for Unreal Engine developers facing packaging success followed by a broken artifact, Shipping-only behavior, startup crashes, missing dependencies, signing failures, source-build delays, or distribution problems.</p>
+        <p class="hero-copy">Practical checklists for Unreal Engine developers facing packaging success followed by a broken artifact, Shipping-only behavior, startup crashes, missing dependencies, signing failures, path-length exposure, source-build delays, or distribution problems.</p>
       </div>
     </section>
 
@@ -52,6 +52,11 @@
           <p class="tag">Steam release</p>
           <h3><a href="steam-appid-shipping-depot.html">Why <code>steam_appid.txt</code> should not be in your Shipping depot</a></h3>
           <p>Find every development override, fix the staging source, rebuild cleanly, and verify the intended Steam-client launch path.</p>
+        </article>
+        <article class="resource-card">
+          <p class="tag">Windows paths</p>
+          <h3><a href="windows-long-path-release-risk.html">Windows long paths need more than one checkbox</a></h3>
+          <p>Separate real staged or installed exposure from executable manifest capability and target-machine policy before relying on long-path behavior.</p>
         </article>
         <article class="resource-card">
           <p class="tag">Windows signing</p>
