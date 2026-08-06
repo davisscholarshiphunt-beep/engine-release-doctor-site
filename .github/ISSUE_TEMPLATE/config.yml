@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Request a private Release Blocker Audit
+    url: https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/#apply
+    about: Do not post project files, private logs, credentials, signing material, or customer data in a public GitHub issue. Review the beta scope and use the private email intake.
+  - name: Browse release troubleshooting resources
+    url: https://davisscholarshiphunt-beep.github.io/engine-release-doctor-site/resources/
+    about: Start with the public evidence checklists and controlled preflights before opening a website or resource correction.
